@@ -16,6 +16,8 @@ module ExceptionHandler
   class AlreadyPaidError < CustomError; end
   class InvalidPaymentAmount < CustomError; end
 
+  class DebtorError < CustomError; end
+
   included do
     rescue_from ActiveRecord::RecordNotFound do |e|
       respond({ status: 'failure', message: e.to_s }, :not_found)
@@ -34,6 +36,11 @@ module ExceptionHandler
     rescue_from ExceptionHandler::InvalidPaymentAmount do |e|
       respond({ status: 'failure', message: e.to_s, installment: e.resource },
               :unprocessable_entity)
+    end
+
+    rescue_from ExceptionHandler::DebtorError do |e|
+      respond({ status: 'failure', message: e.to_s, loan: e.resource },
+              :forbidden)
     end
   end
 end

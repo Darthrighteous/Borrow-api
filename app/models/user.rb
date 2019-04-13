@@ -5,4 +5,9 @@ class User < ApplicationRecord
   validates :credit_score, presence: true
 
   has_many :loans
+
+  def self.debtor?(user_id)
+    last_loan = User.find(user_id).loans.last
+    last_loan ? Loan.owed?(last_loan.id) : false
+  end
 end

@@ -48,6 +48,12 @@ class LoansController < ApplicationController
   end
 
   def eligible_loans_info
+    @last_loan = User.find(session[:current_user_info][:id]).loans.last
+    if Loan.owed?(@last_loan.id)
+      raise DebtorError.new(@last_loan),
+            'You must pay off your last loan before requesting another'
+    end
+
     @eligible_loans = calculate_eligible_loans
   end
 end
