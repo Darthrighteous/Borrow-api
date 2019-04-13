@@ -13,6 +13,10 @@ class UsersController < ApplicationController
     @user = User.find(session[:current_user_info][:id])
     respond status: 'success',
             message: 'profile information successfully fetched',
-            profile_info: @user.as_json(include: [:loans])
+            profile_info: @user.as_json(
+              include: [
+                loans: { include: [:installments] }
+              ]
+            )
   end
 end
