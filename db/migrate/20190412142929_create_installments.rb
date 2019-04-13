@@ -4,6 +4,7 @@ class CreateInstallments < ActiveRecord::Migration[5.2]
       t.references :loan, foreign_key: true
       t.integer :amount
       t.timestamp :due_date
+      t.string :status
 
       t.timestamps
     end

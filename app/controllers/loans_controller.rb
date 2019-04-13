@@ -35,7 +35,8 @@ class LoansController < ApplicationController
       Installment.create(
         loan_id: loan.id,
         amount: installment[:amount],
-        due_date: installment[:due_date]
+        due_date: installment[:due_date],
+        status: 'pending'
       )
     end
   end
