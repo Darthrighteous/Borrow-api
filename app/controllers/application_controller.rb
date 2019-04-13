@@ -10,8 +10,7 @@ class ApplicationController < ActionController::API
 
   def set_user_info
     authenticate_or_request_with_http_token do |id|
-      user_info = User.find(id)
-      session[:current_user_info] = user_info
+      session[:current_user_info] = User.find(id)
     end
   end
 end
