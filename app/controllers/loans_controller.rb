@@ -8,8 +8,8 @@ class LoansController < ApplicationController
   before_action :loan_info
 
   def create
-    if @loan_info
-      create_loan @loan_info
+    if @loan_details
+      create_loan @loan_details
       respond({ status: 'success', loan_info: loan_info,
                 message: 'loan granted successfully' }, :created)
     else
@@ -29,7 +29,7 @@ class LoansController < ApplicationController
   end
 
   def loan_info
-    @loan_info = @eligible_loans.find do |loan|
+    @loan_details = @eligible_loans.find do |loan|
       loan[:amount] == params[:amount].to_i
     end
   end
