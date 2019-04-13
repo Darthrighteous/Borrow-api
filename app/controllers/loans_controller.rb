@@ -7,12 +7,15 @@ class LoansController < ApplicationController
   before_action :loan_info
 
   def create
-    if eligible_for? params[:amount]
-      respond status: 'success',
-              message: 'loan granted successfully',
-              loan_info: 'loan information'
+    if eligible_for? params[:amount].to_i
+      loan_info = @eligible_loans.find do |loan|
+        loan[:amount] == params[:amount].to_i
+      end
+      respond status: 'success', loan_info: loan_info,
+              message: 'loan granted successfully'
     else
-      render json: { message: 'no loan for you' }
+      respond status: 'success', loans: @eligible_loans,
+              message: 'you are not eligible for that amount'
     end
   end
 
