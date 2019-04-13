@@ -3,6 +3,12 @@
 # User controller
 class UsersController < ApplicationController
 
+  def index
+    respond status: 'success',
+            message: 'users successfully retrieved',
+            users: User.all
+  end
+
   def show
     respond status: 'success',
             message: 'profile information successfully fetched',
