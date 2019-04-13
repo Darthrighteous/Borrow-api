@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2019_04_12_143047) do
     t.string "email"
     t.string "phone_no"
     t.integer "income"
+    t.integer "expenses"
     t.integer "credit_score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
