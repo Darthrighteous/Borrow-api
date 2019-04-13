@@ -2,9 +2,6 @@
 
 # loans controller helpers
 module LoanControllerHelper
-  def eligible_for?(amount)
-    @loan_amounts.include? amount
-  end
 
   def calculate_eligible_loans
     user_info = session[:current_user_info]
