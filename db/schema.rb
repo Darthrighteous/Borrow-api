@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2019_04_12_143047) do
     t.bigint "loan_id"
     t.integer "amount"
     t.timestamp "due_date"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["loan_id"], name: "index_installments_on_loan_id"
