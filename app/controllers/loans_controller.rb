@@ -9,8 +9,10 @@ class LoansController < ApplicationController
 
   def create
     if @loan_details
-      create_loan @loan_details
-      respond({ status: 'success', loan_info: loan_info,
+      loan = create_loan @loan_details
+      create_installments loan, @loan_details[:installments]
+
+      respond({ status: 'success', loan_info: @loan_details,
                 message: 'loan granted successfully' }, :created)
     else
       respond({ status: 'failure', loans: @eligible_loans,
@@ -26,6 +28,16 @@ class LoansController < ApplicationController
       interest_rate: info[:interest],
       user_id: session[:current_user_info][:id]
     )
+  end
+
+  def create_installments(loan, installments)
+    installments.each do |installment|
+      Installment.create(
+        loan_id: loan.id,
+        amount: installment[:amount],
+        due_date: installment[:due_date]
+      )
+    end
   end
 
   def loan_info
