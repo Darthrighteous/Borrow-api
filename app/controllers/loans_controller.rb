@@ -2,9 +2,9 @@
 
 # Loans controller class
 class LoansController < ApplicationController
-  include LoanControllerHelper
+  include ApplicationHelper
 
-  before_action :eligible_loans_info
+  before_action :validate_eligibility
   before_action :loan_info
 
   def create
@@ -15,12 +15,22 @@ class LoansController < ApplicationController
       respond({ status: 'success', loan_info: @loan_details,
                 message: 'loan granted successfully' }, :created)
     else
-      respond({ status: 'failure', loans: @eligible_loans,
+      respond({ status: 'failure', loans: calculate_eligible_loans,
                 message: 'you are not eligible for that amount' }, :forbidden)
     end
   end
 
   private
+
+  def validate_eligibility
+    @last_loan = User.find(session[:current_user_info][:id]).loans.last
+    # rubocop:disable Style/GuardClause
+    if @last_loan && Loan.owed?(@last_loan.id)
+      raise DebtorError.new(@last_loan),
+            'You must pay off your last loan before requesting another'
+    end
+    # rubocop:enable Style/GuardClause
+  end
 
   def create_loan(info)
     Loan.create(
@@ -42,18 +52,8 @@ class LoansController < ApplicationController
   end
 
   def loan_info
-    @loan_details = @eligible_loans.find do |loan|
+    @loan_details = calculate_eligible_loans.find do |loan|
       loan[:amount] == params[:amount].to_i
     end
-  end
-
-  def eligible_loans_info
-    @last_loan = User.find(session[:current_user_info][:id]).loans.last
-    if @last_loan && Loan.owed?(@last_loan.id)
-      raise DebtorError.new(@last_loan),
-            'You must pay off your last loan before requesting another'
-    end
-
-    @eligible_loans = calculate_eligible_loans
   end
 end
