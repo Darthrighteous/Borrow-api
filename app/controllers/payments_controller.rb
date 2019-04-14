@@ -13,8 +13,8 @@ class PaymentsController < ApplicationController
       raise InvalidPaymentAmount.new(@installment), 'invalid payment amount'
     end
 
-    create_payment
     update_installment_status
+    create_payment
 
     respond status: 'success', message: 'payment successfully made',
             payment: @payment.as_json(include: [:installment])
@@ -30,7 +30,7 @@ class PaymentsController < ApplicationController
   end
 
   def update_installment_status
-    sts = @payment[:created_at] > @installment[:due_date] ? 'overdue' : 'paid'
+    sts = params[:date_paid] > @installment[:due_date] ? 'overdue' : 'paid'
     @installment.update(status: sts)
     update_credit_score
   end
