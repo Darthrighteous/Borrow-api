@@ -13,8 +13,8 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password: Mysql12345
+  username: <%= ENV['MYSQL_USER'] %>
+  password: <%= ENV['MYSQL_PASSWORD'] %>
   host: localhost
 
 development:
@@ -49,6 +49,5 @@ test:
 #
 production:
   <<: *default
-  database: Borrow-api_production
-  username: Borrow-api
-  password: <%= ENV['BORROW-API_DATABASE_PASSWORD'] %>
+  database: <%= ENV['MYSQL_DB'] %>
+  url: <%= ENV['DATABASE_URL'] %>
