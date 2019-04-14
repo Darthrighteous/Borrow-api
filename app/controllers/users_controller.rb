@@ -2,6 +2,7 @@
 
 # User controller
 class UsersController < ApplicationController
+  include ApplicationHelper
 
   def index
     respond status: 'success',
@@ -17,6 +18,7 @@ class UsersController < ApplicationController
               include: [
                 loans: { include: [:installments] }
               ]
-            )
+            ),
+            loan_offers: calculate_eligible_loans
   end
 end

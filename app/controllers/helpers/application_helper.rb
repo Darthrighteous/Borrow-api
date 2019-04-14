@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-# loans controller helpers
-module LoanControllerHelper
-
+# application helper
+module ApplicationHelper
   def calculate_eligible_loans
     user_info = session[:current_user_info]
     savings = (user_info[:income] - user_info[:expenses]) * 0.5
@@ -12,8 +11,6 @@ module LoanControllerHelper
     interest_rate = interest_rate user_info[:credit_score]
     build_loan_info @loan_amounts, interest_rate
   end
-
-  private
 
   def build_loan_info(amounts, rate)
     amounts.map do |amount|
@@ -30,7 +27,7 @@ module LoanControllerHelper
   def build_installment_info(total)
     Array.new(4) do |i|
       {
-        amount: total / 4,
+        amount: (total / 4).to_i,
         due_date: ((i + 1) * 7).days.from_now
       }
     end
