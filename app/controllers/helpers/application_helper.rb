@@ -14,10 +14,11 @@ module ApplicationHelper
 
   def build_loan_info(amounts, rate)
     amounts.map do |amount|
-      total_due = rate * amount + amount
+      interest = (rate * amount).to_i
+      total_due = interest + amount
       {
         amount: amount,
-        interest: rate * amount,
+        interest: interest,
         total_due: total_due,
         installments: build_installment_info(total_due)
       }
