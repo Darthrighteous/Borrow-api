@@ -62,7 +62,7 @@ module ApplicationHelper
     when 700...750 then 0.07
     when 750...800 then 0.05
     when 800..850 then 0.03
-    else 0 #TODO raise exception
+    else raise InvalidCreditScore.new, "Invalid credit score: #{credit_score}"
     end
   end
   # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity
