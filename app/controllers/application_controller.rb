@@ -6,7 +6,13 @@ class ApplicationController < ActionController::API
   include Response
   include ExceptionHandler
 
-  before_action :set_user_info
+  before_action :set_user_info, except: :index
+
+
+  def index
+    respond({status: 'success', message: 'welcome to borrow api',
+             documentation: 'https://google.com' }, :ok)
+  end
 
   def set_user_info
     authenticate_or_request_with_http_token do |id|
