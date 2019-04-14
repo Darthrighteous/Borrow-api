@@ -10,8 +10,9 @@ class ApplicationController < ActionController::API
 
 
   def index
-    respond({status: 'success', message: 'welcome to borrow api',
-             documentation: 'https://google.com' }, :ok)
+    respond({ status: 'success', message: 'welcome to borrow api',
+              documentation: 'https://documenter.getpostman.com/view/5723250/S1ENzevc' }, # rubocop:disable Metrics/LineLength
+            :ok)
   end
 
   def set_user_info
