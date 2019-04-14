@@ -10,9 +10,10 @@ class LoansController < ApplicationController
   def create
     if @loan_details
       loan = create_loan @loan_details
-      create_installments loan, @loan_details[:installments]
+      installments = create_installments loan, @loan_details[:installments]
 
-      respond({ status: 'success', loan_info: @loan_details,
+      respond({ status: 'success',
+                loan_info: { **@loan_details, installments: installments },
                 message: 'loan granted successfully' }, :created)
     else
       respond({ status: 'failure', loans: calculate_eligible_loans,
@@ -26,7 +27,7 @@ class LoansController < ApplicationController
     @last_loan = User.find(session[:current_user_info][:id]).loans.last
     # rubocop:disable Style/GuardClause
     if @last_loan && Loan.owed?(@last_loan.id)
-      raise DebtorError.new(@last_loan),
+      raise DebtorError.new(@last_loan.as_json(include: [:installments])),
             'You must pay off your last loan before requesting another'
     end
     # rubocop:enable Style/GuardClause
@@ -41,7 +42,7 @@ class LoansController < ApplicationController
   end
 
   def create_installments(loan, installments)
-    installments.each do |installment|
+    installments.map do |installment|
       Installment.create(
         loan_id: loan.id,
         amount: installment[:amount],
