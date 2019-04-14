@@ -36,11 +36,15 @@ class PaymentsController < ApplicationController
   end
 
   def update_credit_score
+    user = @installment.loan.user
     if @installment[:status] == 'paid'
-      @installment.loan.user.increment('credit_score', 15)
+      user.increment('credit_score', 15)
     else
-      @installment.loan.user.decrement('credit_score', 20)
+      user.decrement('credit_score', 20)
     end
+    user[:credit_score] > 850 && user.update(credit_score: 850)
+    user[:credit_score] < 350 && user.update(credit_score: 350)
+    user.save!
   end
 
   def load_installment
