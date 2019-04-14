@@ -22,5 +22,8 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-#Ignote ide config
+#Ignore ide config
 /.idea
+
+#Ignore application yml
+/config/application.yml
