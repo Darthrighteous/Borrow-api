@@ -1,24 +1,35 @@
-# README
+# Borrow-api
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a simple api build with ruby on rails. It is hosted here at https://borrow-api-staging.herokuapp.com/
 
-Things you may want to cover:
+For documentation, go to https://documenter.getpostman.com/view/5723250/S1ENzevc
+
+Relevant Information and setting up locally
 
 * Ruby version
-
-* System dependencies
+```
+ruby 2.6.0
+```
 
 * Configuration
-
+```
+To set up locally
+- clone the repository
+- setup MySQL locally
+- cd into directory
+- navigate to http://localhost:3000/
+```
 * Database creation
+```
+- run rake db:create
+```
 
 * Database initialization
+```
+- run rake db:seed
+```
 
 * How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+- run rspec
+```
